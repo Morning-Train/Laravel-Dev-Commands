@@ -26,6 +26,7 @@ class LaravelDevCommandsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Environment\CopyFromExample::class,
+                Environment\Set::class,
             ]);
         }
     }
