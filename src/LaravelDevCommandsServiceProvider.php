@@ -28,6 +28,7 @@ class LaravelDevCommandsServiceProvider extends ServiceProvider
 
                 /// Database commands
                 Database\Create::class,
+                Database\Setup::class,
 
                 /// Environment commands
                 Environment\CopyFromExample::class,
