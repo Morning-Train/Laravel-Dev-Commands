@@ -27,19 +27,15 @@ class CopyFromExample extends Command
      */
     public function handle()
     {
-        if ($this->option('force') || $this->confirm('WARNING: This will clear the DATABASE. Are you sure you want to continue?')) {
+        $env_path = base_path('.env');
+        $env_example_path = base_path('.env.example');
 
-            $env_path = base_path('.env');
-            $env_example_path = base_path('.env.example');
+        if(!file_exists($env_example_path)) {
+            throw new \Exception('Example .env file does not exist in project root (.env.example)');
+        }
 
-            if(!file_exists($env_example_path)) {
-                throw new \Exception('Example .env file does not exist in project root (.env.example)');
-            }
-
-            if(!file_exists($env_path) || $this->shouldForceCopy()) {
-                copy($env_example_path, $env_path);
-            }
-
+        if(!file_exists($env_path) || $this->shouldForceCopy()) {
+            copy($env_example_path, $env_path);
         }
     }
 
