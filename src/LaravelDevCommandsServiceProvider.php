@@ -27,6 +27,7 @@ class LaravelDevCommandsServiceProvider extends ServiceProvider
             $this->commands([
                 Environment\CopyFromExample::class,
                 Environment\Set::class,
+                Environment\Setup::class,
             ]);
         }
     }
