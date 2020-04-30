@@ -4,6 +4,7 @@ namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use MorningTrain\Laravel\Dev\Commands\System\Events\SystemRefreshing;
 
 class Refresh extends Command
 {
@@ -28,9 +29,6 @@ class Refresh extends Command
      */
     public function handle()
     {
-        //
-        // Config
-        //
 
         $this->call('cache:clear');
         $this->call('route:clear');
@@ -40,8 +38,7 @@ class Refresh extends Command
             $this->call('config:clear') :
             $this->call('config:cache');
 
-
-        $this->call('mt:refresh-permissions');
+        event(new SystemRefreshing());
 
         $this->info('The system was successfully refreshed.');
     }

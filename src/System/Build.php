@@ -4,6 +4,9 @@ namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use MorningTrain\Laravel\Dev\Commands\System\Events\SystemBuilding;
+use MorningTrain\Laravel\Dev\Commands\System\Events\SystemStartsBuilding;
+use MorningTrain\Laravel\Dev\Commands\System\Events\SystemStopsBuilding;
 
 class Build extends Command
 {
@@ -32,36 +35,24 @@ class Build extends Command
 
             $this->call('down');
 
-            //
-            // Config
-            //
-
             $this->call('cache:clear');
             $this->call('route:clear');
-            $this->call('permission:cache-reset');
+
+            event(new SystemStartsBuilding());
 
             App::environment('local') ?
                 $this->call('config:clear') :
                 $this->call('config:cache');
 
-            //
-            // Migrations
-            //
 
             $this->call('migrate:reset');
             $this->call('migrate');
 
-            //
-            // Permissions
-            //
-
-            $this->call('mt:refresh-permissions');
-
-            //
-            // Seed
-            //
+            event(new SystemBuilding());
 
             $this->call('db:seed');
+
+            event(new SystemStopsBuilding());
 
             $this->call('up');
 

@@ -3,6 +3,7 @@
 namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
+use MorningTrain\Laravel\Dev\Commands\System\Events\SystemSettingUp;
 
 class Setup extends Command
 {
@@ -33,11 +34,15 @@ class Setup extends Command
 
             $this->call('env:setup');
             $this->call('db:setup');
-
-            $this->call('passport:keys');
-            $this->call('config:cache');
-
             $this->call('storage:link');
+
+            if(class_exists(\Laravel\Passport\Passport::class)) {
+                $this->call('passport:keys');
+            }
+
+            event(new SystemSettingUp());
+
+            $this->call('config:cache');
 
             $this->call('system:build', $this->option('force')?['--force' => true]:[]);
 
