@@ -35,6 +35,11 @@ class LaravelDevCommandsServiceProvider extends ServiceProvider
                 Environment\Set::class,
                 Environment\Setup::class,
 
+                /// System commands
+                System\Build::class,
+                System\Refresh::class,
+                System\Setup::class,
+
             ]);
         }
     }

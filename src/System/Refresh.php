@@ -4,6 +4,7 @@ namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
 use MorningTrain\Laravel\Dev\Commands\System\Events\SystemRefreshing;
 
 class Refresh extends Command
@@ -32,13 +33,12 @@ class Refresh extends Command
 
         $this->call('cache:clear');
         $this->call('route:clear');
-        $this->call('permission:cache-reset');
 
         App::environment('local') ?
             $this->call('config:clear') :
             $this->call('config:cache');
 
-        event(new SystemRefreshing());
+        Event::dispatch(new SystemRefreshing());
 
         $this->info('The system was successfully refreshed.');
     }

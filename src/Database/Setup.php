@@ -12,7 +12,7 @@ class Setup extends Command
      *
      * @var string
      */
-    protected $signature = 'db:ensure';
+    protected $signature = 'db:setup';
 
     /**
      * The console command description.

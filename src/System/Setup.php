@@ -3,6 +3,7 @@
 namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Event;
 use MorningTrain\Laravel\Dev\Commands\System\Events\SystemSettingUp;
 
 class Setup extends Command
@@ -40,7 +41,7 @@ class Setup extends Command
                 $this->call('passport:keys');
             }
 
-            event(new SystemSettingUp());
+            Event::dispatch(new SystemSettingUp());
 
             $this->call('config:cache');
 
