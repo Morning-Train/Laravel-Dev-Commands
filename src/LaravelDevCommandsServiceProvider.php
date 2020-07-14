@@ -24,6 +24,11 @@ class LaravelDevCommandsServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__ . '/../config/dev-commands.php' => config_path('dev-commands.php'),
+            ], 'dev-commands');
+
             $this->commands([
 
                 /// Database commands

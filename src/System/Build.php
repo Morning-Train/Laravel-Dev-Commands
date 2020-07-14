@@ -48,13 +48,17 @@ class Build extends Command
                 $this->call('config:clear') :
                 $this->call('config:cache');
 
+            if(config('dev-commands.system.build.reset_migrations', true)) {
+                $this->call('migrate:reset');
+            }
 
-            $this->call('migrate:reset');
             $this->call('migrate');
 
             Event::dispatch(new SystemBuilding());
 
-            $this->call('db:seed');
+            if(config('dev-commands.system.build.seed_database', true)) {
+                $this->call('db:seed');
+            }
 
             Event::dispatch(new SystemStopsBuilding());
 
