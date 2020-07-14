@@ -41,7 +41,7 @@ class Setup extends Command
                 $this->call('passport:keys');
             }
 
-            Event::dispatch(new SystemSettingUp());
+            Event::dispatch(new SystemSettingUp($this));
 
             $this->call('config:cache');
 

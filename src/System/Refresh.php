@@ -38,7 +38,7 @@ class Refresh extends Command
             $this->call('config:clear') :
             $this->call('config:cache');
 
-        Event::dispatch(new SystemRefreshing());
+        Event::dispatch(new SystemRefreshing($this));
 
         $this->info('The system was successfully refreshed.');
     }

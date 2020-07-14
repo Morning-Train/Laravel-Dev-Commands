@@ -42,7 +42,7 @@ class Build extends Command
 
             $this->call('db:setup');
 
-            Event::dispatch(new SystemStartsBuilding());
+            Event::dispatch(new SystemStartsBuilding($this));
 
             App::environment('local') ?
                 $this->call('config:clear') :
@@ -54,13 +54,14 @@ class Build extends Command
 
             $this->call('migrate');
 
-            Event::dispatch(new SystemBuilding());
+            Event::dispatch(new SystemBuilding($this));
+
 
             if(config('dev-commands.system.build.seed_database', true)) {
                 $this->call('db:seed');
             }
 
-            Event::dispatch(new SystemStopsBuilding());
+            Event::dispatch(new SystemStopsBuilding($this));
 
             $this->call('up');
 
