@@ -48,6 +48,10 @@ class Build extends Command
                 $this->call('config:clear') :
                 $this->call('config:cache');
 
+            if(config('dev-commands.system.build.drop_database', false)) {
+                $this->call('db:drop');
+            }
+
             if(config('dev-commands.system.build.reset_migrations', true)) {
                 $this->call('migrate:reset');
             }
