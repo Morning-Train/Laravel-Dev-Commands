@@ -12,7 +12,7 @@ class Setup extends Command
      *
      * @var string
      */
-    protected $signature = 'env:setup';
+    protected $signature = 'env:setup {--force}';
 
     /**
      * The console command description.
@@ -29,7 +29,7 @@ class Setup extends Command
     public function handle()
     {
         $this->call('config:clear');
-        $this->call('env:copy-from-example');
+        $this->call('env:copy-from-example', $this->option('force') ? ['--force' => true] : []);
         $this->call('key:generate');
     }
 

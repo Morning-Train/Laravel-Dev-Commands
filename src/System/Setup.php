@@ -3,6 +3,7 @@
 namespace MorningTrain\Laravel\Dev\Commands\System;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
 use MorningTrain\Laravel\Dev\Commands\System\Events\SystemSettingUp;
 
@@ -30,22 +31,21 @@ class Setup extends Command
     public function handle()
     {
         if ($this->option('force') || $this->confirm('WARNING: This will clear the DATABASE. Are you sure you want to continue?')) {
-
-            $this->call('config:clear');
-
-            $this->call('env:setup');
+            $this->call('env:setup', $this->option('force') ? ['--force' => true] : []);
             $this->call('db:setup');
             $this->call('storage:link');
 
-            if(class_exists(\Laravel\Passport\Passport::class)) {
+            if (class_exists(\Laravel\Passport\Passport::class)) {
                 $this->call('passport:keys');
             }
 
             Event::dispatch(new SystemSettingUp($this));
 
-            $this->call('config:cache');
+            App::environment('local') ?
+                $this->call('config:clear') :
+                $this->call('config:cache');
 
-            $this->call('system:build', $this->option('force')?['--force' => true]:[]);
+            $this->call('system:build', $this->option('force') ? ['--force' => true] : []);
 
             $this->info('The system was successfully set up');
 
