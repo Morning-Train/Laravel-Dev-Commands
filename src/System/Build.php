@@ -32,7 +32,7 @@ class Build extends Command
      */
     public function handle()
     {
-        if ($this->option('force') || $this->confirm('WARNING: This will clear the DATABASE. Are you sure you want to continue?')) {
+        if (App::environment('local') || $this->option('force') || $this->confirm('WARNING: This will clear the DATABASE. Are you sure you want to continue?')) {
 
             $this->call('down');
 
